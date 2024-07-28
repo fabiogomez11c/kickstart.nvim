@@ -626,6 +626,13 @@ require('lazy').setup({
     end,
   },
 
+  {
+    'mbbill/undotree',
+    config = function()
+      vim.keymap.set('n', '<leader>su', vim.cmd.UndotreeToggle, { desc = '[S]earch [H]elp' })
+    end,
+  },
+
   { -- Autoformat
     'stevearc/conform.nvim',
     lazy = false,
