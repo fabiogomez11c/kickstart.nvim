@@ -630,7 +630,7 @@ require('lazy').setup({
   {
     'mbbill/undotree',
     config = function()
-      vim.keymap.set('n', '<leader>su', vim.cmd.UndotreeToggle, { desc = '[S]earch [H]elp' })
+      vim.keymap.set('n', '<leader>su', vim.cmd.UndotreeToggle, { desc = '[S]earch [U]ndoTree' })
     end,
   },
 
