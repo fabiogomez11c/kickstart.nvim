@@ -853,6 +853,7 @@ require('lazy').setup({
 
   {
     'rose-pine/neovim',
+
     config = function()
       require('rose-pine').setup {
         styles = {
@@ -863,7 +864,29 @@ require('lazy').setup({
       }
     end,
   },
+  {
+    dir = '~/code/stackmap.nvim',
+    name = 'stackvim.nvim',
+    opts = {
+      name = 'fabio',
+    },
+  },
+  {
+    'folke/tokyonight.nvim',
+    lazy = false,
+    priority = 1000,
+    opts = {},
 
+    init = function()
+      -- Load the colorscheme here.
+      -- Like many other themes, this one has different styles, and you could load
+      -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
+      vim.cmd.colorscheme 'tokyonight-storm'
+
+      -- You can configure highlights by doing something like:
+      vim.cmd.hi 'Comment gui=none'
+    end,
+  },
   { -- You can easily change to a different colorscheme.
     -- Change the name of the colorscheme plugin below, and then
     -- change the command in the config to whatever the name of that colorscheme is.
@@ -890,17 +913,7 @@ require('lazy').setup({
         end,
       }
     end,
-    init = function()
-      -- Load the colorscheme here.
-      -- Like many other themes, this one has different styles, and you could load
-      -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'kanagawa-paper'
-
-      -- You can configure highlights by doing something like:
-      vim.cmd.hi 'Comment gui=none'
-    end,
   },
-
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
 
@@ -989,8 +1002,8 @@ require('lazy').setup({
   -- require 'kickstart.plugins.autopairs',
   -- require 'kickstart.plugins.neo-tree',
   require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
-  -- require 'kickstart.plugins.chatgpt',
-  require 'kickstart.plugins.gp',
+  require 'kickstart.plugins.chatgpt',
+  -- require 'kickstart.plugins.gp',
   require 'kickstart.plugins.oil',
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
