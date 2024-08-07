@@ -163,14 +163,14 @@ vim.keymap.set('i', 'jj', '<Esc>')
 vim.opt.hlsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
-local ai_assistant = require 'ai_assistant'
-
-vim.api.nvim_create_user_command('AIAssist', function()
-  ai_assistant.invoke_ai_assistant {}
-end, {})
-
-vim.keymap.set('n', '<leader>ai', ':AIAssist<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('v', '<leader>ai', ':<C-u>lua require("ai_assistant").invoke_ai_assistant()<CR>', { noremap = true, silent = true })
+-- local ai_assistant = require 'ai_assistant'
+--
+-- vim.api.nvim_create_user_command('AIAssist', function()
+--   ai_assistant.invoke_ai_assistant {}
+-- end, {})
+--
+-- vim.keymap.set('n', '<leader>ai', ':AIAssist<CR>', { noremap = true, silent = true })
+-- vim.api.nvim_set_keymap('v', '<leader>ai', ':<C-u>lua require("ai_assistant").invoke_ai_assistant()<CR>', { noremap = true, silent = true })
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })

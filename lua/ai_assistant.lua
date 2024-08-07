@@ -1,4 +1,5 @@
 local M = {}
+local Job = require 'plenary.job'
 
 -- Debug function
 local function debug_print(message)
@@ -6,8 +7,37 @@ local function debug_print(message)
 end
 
 -- Function to get API key from environment variable
-local function get_api_key(name)
-  return os.getenv(name)
+-- local function get_api_key(name)
+--   return os.getenv(name)
+-- end
+
+-- Function to make the api call
+-- @prompt : prompt to be passed into the api call
+-- @callback : callback function to handle the api response
+function M.call_local_api(prompt, callback)
+  local url = 'http://127.0.0.1:8000'
+  local data = vim.fn.json_encode { message = prompt }
+
+  Job:new({
+    command = 'curl',
+    args = {
+      '-X',
+      'POST',
+      '-H',
+      'Content-Type: application/json',
+      '-d',
+      data,
+      url,
+    },
+    on_exit = function(j, return_val)
+      if return_val == 0 then
+        local result = table.concat(j:result(), '\n')
+        callback(result)
+      else
+        print('Error calling API: ' .. vim.inspect(j:stderr_result()))
+      end
+    end,
+  }):start()
 end
 
 -- Function to get lines until cursor
@@ -61,7 +91,25 @@ function M.invoke_ai_assistant(opts)
     prompt = M.get_lines_until_cursor()
   end
 
-  print(prompt)
+  M.call_local_api(prompt, function(result)
+    -- Parse the JSON result
+    local success, parsed = pcall(vim.json.decode, result)
+    debug_print(parsed)
+    if success then
+      -- Assuming the PAI returns a 'response' field
+      local response = parsed.response
+      if response then
+        -- Insert the response at the cursor position
+        vim.schedule(function()
+          vim.api.nvim_put({ response }, 'c', true, true)
+        end)
+      else
+        print 'API doesnt contain response field'
+      end
+    else
+      print('Failed to parse API response: ' .. result)
+    end
+  end)
 end
 
 return M
