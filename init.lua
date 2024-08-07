@@ -166,7 +166,7 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 local ai_assistant = require 'ai_assistant'
 
 vim.api.nvim_create_user_command('AIAssist', function()
-  ai_assistant.invoke_ai_assistant()
+  ai_assistant.invoke_ai_assistant {}
 end, {})
 
 vim.keymap.set('n', '<leader>ai', ':AIAssist<CR>', { noremap = true, silent = true })
