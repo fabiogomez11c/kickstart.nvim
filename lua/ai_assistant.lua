@@ -75,6 +75,30 @@ function M.get_visual_selection()
   return table.concat(lines, '\n')
 end
 
+-- Function to insert formatted response into the buffer
+function M.insert_formatted_response(response_str)
+  -- Remove the outer quotes and unescape inner quotes
+  local unescaped = response_str:gsub('^"', ''):gsub('"$', ''):gsub('\\"', '"')
+  local lines = vim.split(response_str, '\n')
+
+  -- Schedule the insertion to occur in the main Neovim event loop
+  vim.schedule(function()
+    -- Get the current cursor position
+    -- local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    local current_window = vim.api.nvim_get_current_win()
+    local cursor_position = vim.api.nvim_win_get_cursor(current_window)
+    local row, col = cursor_position[1], cursor_position[2]
+
+    vim.cmd 'undojoin'
+    debug_print(lines)
+    vim.api.nvim_put(lines, 'l', true, true)
+
+    local num_lines = #lines
+    local last_line_length = #lines[num_lines]
+    vim.api.nvim_win_set_cursor(current_window, { row + num_lines - 1, col + last_line_length })
+  end)
+end
+
 -- Function to invoke the AI assistant
 function M.invoke_ai_assistant(opts)
   local replace = opts.replace
@@ -94,15 +118,12 @@ function M.invoke_ai_assistant(opts)
   M.call_local_api(prompt, function(result)
     -- Parse the JSON result
     local success, parsed = pcall(vim.json.decode, result)
-    debug_print(parsed)
     if success then
       -- Assuming the PAI returns a 'response' field
       local response = parsed.response
       if response then
         -- Insert the response at the cursor position
-        vim.schedule(function()
-          vim.api.nvim_put({ response }, 'c', true, true)
-        end)
+        M.insert_formatted_response(response)
       else
         print 'API doesnt contain response field'
       end
@@ -113,6 +134,8 @@ function M.invoke_ai_assistant(opts)
 end
 
 return M
+
+-- write a python function to create random numbers
 
 -- [[
 -- there are several thing pending to be inplemente
