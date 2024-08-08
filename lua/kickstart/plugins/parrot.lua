@@ -34,6 +34,17 @@ return {
       },
     }
   end,
+
+  vim.keymap.set('n', '<leader>an', ':PrtChatNew vsplit<CR>', { desc = '[A]I [N]ew Chat' }),
+  vim.keymap.set('n', '<leader>at', ':PrtChatToggle<CR>', { desc = '[A]I [T]oggle' }),
+  vim.keymap.set('n', '<leader>af', ':PrtChatFinder<CR>', { desc = '[A]I [F]inder' }),
+  vim.keymap.set('n', '<leader>aa', ':PrtAppend<CR>', { desc = '[A]I [A]ppend' }),
+  vim.keymap.set('n', '<leader>ap', ':PrtPrepend<CR>', { desc = '[A]I [P]repend' }),
+
+  vim.keymap.set('v', '<leader>aa', ':PrtAppend<CR>', { desc = '[A]I [A]ppend' }),
+  vim.keymap.set('v', '<leader>ap', ':PrtPrepend<CR>', { desc = '[A]I [P]repend' }),
+  vim.keymap.set('v', '<leader>ar', ':PrtRewrite<CR>', { desc = '[A]I [R]ewrite' }),
+
   -- chat history
   -- .local/share/nvim/parrot/chats
 }
