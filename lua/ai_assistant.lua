@@ -14,13 +14,15 @@ end
 -- Function to make the api call
 -- @prompt : prompt to be passed into the api call
 -- @callback : callback function to handle the api response
-function M.call_local_api(prompt, callback)
-  local url = 'http://127.0.0.1:8000'
+function M.call_local_api_stream(prompt, on_chunk)
+  local url = 'http://127.0.0.1:8000/stream'
   local data = vim.fn.json_encode { message = prompt }
 
-  Job:new({
+  local job
+  job = Job:new {
     command = 'curl',
     args = {
+      '--no-buffer',
       '-X',
       'POST',
       '-H',
@@ -29,15 +31,18 @@ function M.call_local_api(prompt, callback)
       data,
       url,
     },
-    on_exit = function(j, return_val)
-      if return_val == 0 then
-        local result = table.concat(j:result(), '\n')
-        callback(result)
+    on_stdout = function(_, line)
+      -- `line` receives each chunk of the streaming response
+      debug_print(line)
+      if line then
+        on_chunk(line)
       else
-        print('Error calling API: ' .. vim.inspect(j:stderr_result()))
+        debug_print('Failed to parse chunk: ' .. line)
       end
     end,
-  }):start()
+  }
+
+  job:start()
 end
 
 -- Function to get lines until cursor
@@ -90,12 +95,27 @@ function M.insert_formatted_response(response_str)
     local row, col = cursor_position[1], cursor_position[2]
 
     vim.cmd 'undojoin'
-    debug_print(lines)
+    -- debug_print(lines)
     vim.api.nvim_put(lines, 'l', true, true)
 
     local num_lines = #lines
     local last_line_length = #lines[num_lines]
     vim.api.nvim_win_set_cursor(current_window, { row + num_lines - 1, col + last_line_length })
+  end)
+end
+
+-- Token streaming callback function
+-- Token by token insertion at the cursor position
+function M.insert_token(token)
+  vim.schedule(function()
+    local current_window = vim.api.nvim_get_current_win()
+    local cursor_position = vim.api.nvim_win_get_cursor(current_window)
+    local row, col = cursor_position[1], cursor_position[2]
+
+    vim.api.nvim_put({ token }, 'c', false, true)
+
+    local last_line_length = #token
+    vim.api.nvim_win_set_cursor(current_window, { row, col + last_line_length })
   end)
 end
 
@@ -115,28 +135,33 @@ function M.invoke_ai_assistant(opts)
     prompt = M.get_lines_until_cursor()
   end
 
-  M.call_local_api(prompt, function(result)
-    -- Parse the JSON result
-    local success, parsed = pcall(vim.json.decode, result)
-    if success then
-      -- Assuming the PAI returns a 'response' field
-      local response = parsed.response
-      if response then
-        -- Insert the response at the cursor position
-        M.insert_formatted_response(response)
-      else
-        print 'API doesnt contain response field'
-      end
-    else
-      print('Failed to parse API response: ' .. result)
-    end
+  prompt = 'create a python function to sum two numbers'
+
+  M.call_local_api_stream(prompt, function(data)
+    M.insert_token(data)
   end)
 end
 
+-- M.call_local_api('write a python function to create random numbers', function(result)
+--   -- Parse the JSON result
+--   local success, parsed = pcall(vim.json.decode, result)
+--   if success then
+--     -- Assuming the PAI returns a 'response' field
+--     local response = parsed.response
+--     if response then
+--       -- Insert the response at the cursor position
+--       M.insert_formatted_response(response)
+--     else
+--       print 'API doesnt contain response field'
+--     end
+--   else
+--     print('Failed to parse API response: ' .. result)
+--   end
+-- end)
+--
+M.invoke_ai_assistant {}
+
 return M
-
--- write a python function to create random numbers
-
 -- [[
 -- there are several thing pending to be inplemente
 -- 1. when there isn't any selection - visual mode, the context for the LLM should be the lines till the cursor,
