@@ -894,11 +894,11 @@ require('lazy').setup({
     -- change the command in the config to whatever the name of that colorscheme is.
     --
     -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-    'sho-87/kanagawa-paper.nvim',
+    'rebelot/kanagawa.nvim',
     priority = 1000, -- Make sure to load this before all the other start plugins.
     lazy = false,
     config = function()
-      require('kanagawa-paper').setup {
+      require('kanagawa').setup {
         undercurl = true,
         transparent = false,
         gutter = false,
@@ -909,7 +909,10 @@ require('lazy').setup({
         keywordStyle = { italic = false, bold = false },
         statementStyle = { italic = false, bold = false },
         typeStyle = { italic = false },
-        colors = { theme = {}, palette = {} },
+        colors = {
+          theme = {},
+          palette = {},
+        },
         overrides = function()
           return {}
         end,
@@ -920,7 +923,7 @@ require('lazy').setup({
       -- Load the colorscheme here.
       -- Like many other themes, this one has different styles, and you could load
       -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'rose-pine'
+      vim.cmd.colorscheme 'kanagawa-dragon'
 
       -- You can configure highlights by doing something like:
       vim.cmd.hi 'Comment gui=none'
