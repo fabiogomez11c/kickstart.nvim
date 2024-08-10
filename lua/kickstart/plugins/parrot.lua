@@ -44,6 +44,11 @@ return {
   vim.keymap.set('v', '<leader>aa', ':PrtAppend<CR>', { desc = '[A]I [A]ppend' }),
   vim.keymap.set('v', '<leader>ap', ':PrtPrepend<CR>', { desc = '[A]I [P]repend' }),
   vim.keymap.set('v', '<leader>ar', ':PrtRewrite<CR>', { desc = '[A]I [R]ewrite' }),
+  vim.keymap.set('v', '<leader>as', ':PrtChatPaste<CR>', { desc = '[A]I Pa[S]te' }),
+
+  vim.keymap.set('v', '<C-g><C-g>', ':PrtChatResponde<CR>', { desc = '[A]I [R]esponde' }),
+  vim.keymap.set('n', '<C-g><C-g>', ':PrtChatResponde<CR>', { desc = '[A]I [R]esponde' }),
+  vim.keymap.set('n', '<C-g>s', ':PrtChatStop<CR>', { desc = '[A]I [S]top' }),
 
   -- chat history
   -- .local/share/nvim/parrot/chats
