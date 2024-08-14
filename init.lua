@@ -83,7 +83,7 @@ I hope you enjoy your Neovim journey,
 
 P.S. You can delete this when you're done too. It's your config now! :)
 --]]
--- vim.opt.guicursor = ''
+vim.opt.guicursor = ''
 
 -- Set <space> as the leader key
 -- See `:help mapleader`
@@ -889,6 +889,7 @@ require('lazy').setup({
     priority = 1000,
     opts = {},
   },
+  { 'catppuccin/nvim', name = 'catppuccin', priority = 1000 },
   { -- You can easily change to a different colorscheme.
     -- Change the name of the colorscheme plugin below, and then
     -- change the command in the config to whatever the name of that colorscheme is.
@@ -900,7 +901,7 @@ require('lazy').setup({
     config = function()
       require('kanagawa').setup {
         undercurl = true,
-        transparent = false,
+        transparent = true,
         gutter = false,
         dimInactive = true, -- disabled when trasnparent
         terminalColors = true,
@@ -923,7 +924,7 @@ require('lazy').setup({
       -- Load the colorscheme here.
       -- Like many other themes, this one has different styles, and you could load
       -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'kanagawa-dragon'
+      vim.cmd.colorscheme 'kanagawa-wave'
 
       -- You can configure highlights by doing something like:
       vim.cmd.hi 'Comment gui=none'
@@ -1037,7 +1038,7 @@ require('lazy').setup({
   -- require 'kickstart.plugins.neo-tree',
   require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
   require 'kickstart.plugins.parrot',
-  -- require 'kickstart.plugins.chatgpt',
+  require 'kickstart.plugins.chatgpt',
   -- require 'kickstart.plugins.gp',
   require 'kickstart.plugins.oil',
 
