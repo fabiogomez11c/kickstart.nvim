@@ -140,6 +140,15 @@ if not vim.loop.fs_stat(lazypath) then
 end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
+-- Load AI Assistant
+local ai_assistant = require('ai_assistant')
+
+-- Add keymap for AI Assistant
+vim.api.nvim_set_keymap('n', '<leader>ai', [[<cmd>lua require('ai_assistant').invoke_ai_assistant()<CR>]], { noremap = true, silent = true, desc = 'Invoke AI Assistant' })
+vim.api.nvim_set_keymap('v', '<leader>ai', [[<cmd>lua require('ai_assistant').invoke_ai_assistant()<CR>]], { noremap = true, silent = true, desc = 'Invoke AI Assistant (Visual)' })
+vim.api.nvim_set_keymap('n', '<leader>aR', [[<cmd>lua require('ai_assistant').invoke_ai_assistant({replace = true})<CR>]], { noremap = true, silent = true, desc = 'Invoke AI Assistant (Replace)' })
+vim.api.nvim_set_keymap('v', '<leader>aR', [[<cmd>lua require('ai_assistant').invoke_ai_assistant({replace = true})<CR>]], { noremap = true, silent = true, desc = 'Invoke AI Assistant (Visual Replace)' })
+
 -- [[ Configure and install plugins ]]
 --
 --  To check the current status of your plugins, run
