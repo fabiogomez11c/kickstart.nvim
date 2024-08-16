@@ -1,7 +1,27 @@
 return {
   'robitx/gp.nvim',
   config = function()
-    require('gp').setup()
+    local configuration = {
+      providers = {
+        anthropic = {
+          disable = false,
+          endpoint = 'https://api.anthropic.com/v1/messages',
+          secret = os.getenv 'ANTHROPIC_API_KEY',
+        },
+      },
+      agents = {
+        {
+          provider = 'anthropic',
+          name = 'CodeClaude-3-5-Sonnet',
+          chat = true,
+          command = true,
+          -- string with model name or table with model name and parameters
+          model = { model = 'claude-3-5-sonnet-20240620', temperature = 0.8, top_p = 1 },
+          system_prompt = require('gp.defaults').code_system_prompt,
+        },
+      },
+    }
+    require('gp').setup(configuration)
     local function keymapOptions(desc)
       return {
         noremap = true,
