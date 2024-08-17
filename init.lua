@@ -487,7 +487,7 @@ require('lazy').setup {
       local servers = {
         -- clangd = {},
         -- gopls = {},
-        -- pyright = {},
+        pyright = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -739,7 +739,7 @@ require('lazy').setup {
   },
 
   -- Highlight todo, notes, etc in comments
-  -- { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
+  { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
 
   { -- Collection of various small independent plugins/modules
     'echasnovski/mini.nvim',
@@ -764,7 +764,7 @@ require('lazy').setup {
       --  and try some other statusline plugin
       local statusline = require 'mini.statusline'
       -- set use_icons to true if you have a Nerd Font
-      -- statusline.setup { use_icons = vim.g.have_nerd_font }
+      statusline.setup { use_icons = vim.g.have_nerd_font }
 
       -- You can configure sections in the statusline by overriding their
       -- default behavior. For example, here we set the section for
@@ -858,34 +858,6 @@ require('lazy').setup {
   -- { import = 'custom.plugins' },
 }
 
--- Load AI Assistant
-local ai_assistant = require 'ai_assistant'
-
--- Add keymap for AI Assistant
-vim.api.nvim_set_keymap(
-  'n',
-  '<leader>ai',
-  [[<cmd>lua require('ai_assistant').invoke_ai_assistant()<CR>]],
-  { noremap = true, silent = true, desc = 'Invoke AI Assistant' }
-)
-vim.api.nvim_set_keymap(
-  'v',
-  '<leader>ai',
-  [[<cmd>lua require('ai_assistant').invoke_ai_assistant()<CR>]],
-  { noremap = true, silent = true, desc = 'Invoke AI Assistant (Visual)' }
-)
-vim.api.nvim_set_keymap(
-  'n',
-  '<leader>aR',
-  [[<cmd>lua require('ai_assistant').invoke_ai_assistant({replace = true})<CR>]],
-  { noremap = true, silent = true, desc = 'Invoke AI Assistant (Replace)' }
-)
-vim.api.nvim_set_keymap(
-  'v',
-  '<leader>aR',
-  [[<cmd>lua require('ai_assistant').invoke_ai_assistant({replace = true})<CR>]],
-  { noremap = true, silent = true, desc = 'Invoke AI Assistant (Visual Replace)' }
-)
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
 -- end configuration file
