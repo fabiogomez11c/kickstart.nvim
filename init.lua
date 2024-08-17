@@ -78,16 +78,6 @@ vim.keymap.set('i', 'jj', '<Esc>')
 vim.opt.hlsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
--- vim.cmd.colorscheme 'habamax'
--- local ai_assistant = require 'ai_assistant'
---
--- vim.api.nvim_create_user_command('AIAssist', function()
---   ai_assistant.invoke_ai_assistant {}
--- end, {})
---
--- vim.keymap.set('n', '<leader>ai', ':AIAssist<CR>', { noremap = true, silent = true })
--- vim.api.nvim_set_keymap('v', '<leader>ai', ':<C-u>lua require("ai_assistant").invoke_ai_assistant()<CR>', { noremap = true, silent = true })
-
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
@@ -139,15 +129,6 @@ if not vim.loop.fs_stat(lazypath) then
   vim.fn.system { 'git', 'clone', '--filter=blob:none', '--branch=stable', lazyrepo, lazypath }
 end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
-
--- Load AI Assistant
-local ai_assistant = require('ai_assistant')
-
--- Add keymap for AI Assistant
-vim.api.nvim_set_keymap('n', '<leader>ai', [[<cmd>lua require('ai_assistant').invoke_ai_assistant()<CR>]], { noremap = true, silent = true, desc = 'Invoke AI Assistant' })
-vim.api.nvim_set_keymap('v', '<leader>ai', [[<cmd>lua require('ai_assistant').invoke_ai_assistant()<CR>]], { noremap = true, silent = true, desc = 'Invoke AI Assistant (Visual)' })
-vim.api.nvim_set_keymap('n', '<leader>aR', [[<cmd>lua require('ai_assistant').invoke_ai_assistant({replace = true})<CR>]], { noremap = true, silent = true, desc = 'Invoke AI Assistant (Replace)' })
-vim.api.nvim_set_keymap('v', '<leader>aR', [[<cmd>lua require('ai_assistant').invoke_ai_assistant({replace = true})<CR>]], { noremap = true, silent = true, desc = 'Invoke AI Assistant (Visual Replace)' })
 
 -- [[ Configure and install plugins ]]
 --
@@ -877,6 +858,34 @@ require('lazy').setup {
   -- { import = 'custom.plugins' },
 }
 
+-- Load AI Assistant
+local ai_assistant = require 'ai_assistant'
+
+-- Add keymap for AI Assistant
+vim.api.nvim_set_keymap(
+  'n',
+  '<leader>ai',
+  [[<cmd>lua require('ai_assistant').invoke_ai_assistant()<CR>]],
+  { noremap = true, silent = true, desc = 'Invoke AI Assistant' }
+)
+vim.api.nvim_set_keymap(
+  'v',
+  '<leader>ai',
+  [[<cmd>lua require('ai_assistant').invoke_ai_assistant()<CR>]],
+  { noremap = true, silent = true, desc = 'Invoke AI Assistant (Visual)' }
+)
+vim.api.nvim_set_keymap(
+  'n',
+  '<leader>aR',
+  [[<cmd>lua require('ai_assistant').invoke_ai_assistant({replace = true})<CR>]],
+  { noremap = true, silent = true, desc = 'Invoke AI Assistant (Replace)' }
+)
+vim.api.nvim_set_keymap(
+  'v',
+  '<leader>aR',
+  [[<cmd>lua require('ai_assistant').invoke_ai_assistant({replace = true})<CR>]],
+  { noremap = true, silent = true, desc = 'Invoke AI Assistant (Visual Replace)' }
+)
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
 -- end configuration file
