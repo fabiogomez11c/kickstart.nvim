@@ -51,7 +51,7 @@ M.show_docker_images = function(opts)
             'term://docker',
             'run',
             '-it',
-            selection.value.Repository,
+            selection.value.Repository .. ':' .. selection.value.Tag,
           }
           vim.cmd(vim.fn.join(command, ' '))
         end)
